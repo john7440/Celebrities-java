@@ -29,6 +29,32 @@ public class Main {
 		}
 		return potentialCelebrities;
 	}
+	
+	public static Set<Integer> filteringCelebrities(Set<Integer> candidates, Map<Integer, List<Integer>> knownGuests){
+		
+		Set<Integer> result = new HashSet<>();
+		
+		for (Integer candidateId: candidates) {
+			List<Integer> knownByCandidate = knownGuests.get(candidateId);
+			boolean onlyKnownCelebrities = true;
+			
+			if (knownByCandidate != null) {
+				
+				for (Integer knownId: knownByCandidate) {
+					
+					if (!candidates.contains(knownId)) {
+						onlyKnownCelebrities = false;
+						break;
+					}
+				}
+			}
+			if (onlyKnownCelebrities) {
+				result.add(candidateId);
+			}
+		}
+		return result;
+		
+	}
 
 	public static void main(String[] args) {
 		
@@ -55,7 +81,10 @@ public class Main {
         knownGuests.put(8, Arrays.asList(2, 4, 5, 6 , 7));
         
         Set<Integer> knownByEveryone = findKnownByEveryone(guestNames, knownGuests);
-        System.out.println(knownByEveryone);
+        
+        Set<Integer> validatedCelebrities = filteringCelebrities(knownByEveryone, knownGuests);
+        
+        System.out.println(validatedCelebrities);
 	}
 
 }
