@@ -4,11 +4,14 @@ import java.util.*;
 
 public class Main {
 	
-	// On cherche qui est connu de tout le monde
+	// This method find guests who are known by every other guests
+	// so they are a potential celebrities
 	public static Set<Integer> findKnownByEveryone(Map<Integer, String> guestNames , Map<Integer, List<Integer>> knownGuests){
-		// le set pour stocker les invité connu de tous
+		
+		// We initialize our set to stock potentialCelebrities (known by all)
 		Set<Integer> potentialCelebrities = new HashSet<>();
 		
+		// We check for each guest 
 		for (Integer guestId : guestNames.keySet()) {
 			boolean knownByAll = true;
 			
@@ -58,7 +61,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		
-		// noms des invités
+		// Our guests list with their id and names
         Map<Integer, String> guestNames = new HashMap<>();
         guestNames.put(1, "Albert");
         guestNames.put(2, "Bénédicte");
@@ -69,7 +72,7 @@ public class Main {
         guestNames.put(7, "Gaston");
         guestNames.put(8, "Héloïse");
 
-        // connaissances des autres invités
+        // Id and known guests 
         Map<Integer, List<Integer>> knownGuests = new HashMap<>();
         knownGuests.put(1, Arrays.asList(2, 5, 6));
         knownGuests.put(2, Arrays.asList(3, 5, 6));
@@ -80,10 +83,13 @@ public class Main {
         knownGuests.put(7, Arrays.asList(2, 3, 5, 6, 8));
         knownGuests.put(8, Arrays.asList(2, 4, 5, 6 , 7));
         
+        // We find every guest who is known by everyone
         Set<Integer> knownByEveryone = findKnownByEveryone(guestNames, knownGuests);
         
+        // Then we filter if they known other celebrities
         Set<Integer> validatedCelebrities = filteringCelebrities(knownByEveryone, knownGuests);
         
+        // Final display
         System.out.println("==============================");
         System.out.println("Célébrités identifiées :\n");
         for (Integer id : validatedCelebrities) {
