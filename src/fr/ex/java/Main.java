@@ -3,6 +3,32 @@ import java.util.*;
 
 
 public class Main {
+	
+	// On cherche qui est connu de tout le monde
+	public static Set<Integer> findKnownByEveryone(Map<Integer, String> guestNames , Map<Integer, List<Integer>> knownGuests){
+		// le set pour stocker les invité connu de tous
+		Set<Integer> potentialCelebrities = new HashSet<>();
+		
+		for (Integer guestId : guestNames.keySet()) {
+			boolean knownByAll = true;
+			
+			for (Integer otherGuestId: guestNames.keySet()) {
+				
+				if (!otherGuestId.equals(guestId)) {
+					List<Integer> known = knownGuests.get(otherGuestId);
+					
+					if (known == null || !known.contains(guestId)) {
+						knownByAll = false;
+						break;
+					}
+				}
+			}
+			if (knownByAll) {
+				potentialCelebrities.add(guestId);
+			}
+		}
+		return potentialCelebrities;
+	}
 
 	public static void main(String[] args) {
 		
@@ -26,7 +52,10 @@ public class Main {
         knownGuests.put(5, Arrays.asList(6));
         knownGuests.put(6, Arrays.asList(5));
         knownGuests.put(7, Arrays.asList(2, 3, 5, 6, 8));
-        knownGuests.put(5, Arrays.asList(2, 4, 5, 6 , 7));
+        knownGuests.put(8, Arrays.asList(2, 4, 5, 6 , 7));
+        
+        Set<Integer> knownByEveryone = findKnownByEveryone(guestNames, knownGuests);
+        System.out.println(knownByEveryone);
 	}
 
 }
