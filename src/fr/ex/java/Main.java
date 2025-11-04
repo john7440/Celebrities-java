@@ -84,7 +84,12 @@ public class Main {
         
         Set<Integer> validatedCelebrities = filteringCelebrities(knownByEveryone, knownGuests);
         
-        System.out.println(validatedCelebrities);
+        System.out.println("==============================");
+        System.out.println("Célébrités identifiées :\n");
+        for (Integer id : validatedCelebrities) {
+            System.out.println("- " + guestNames.get(id));
+        }
+        System.out.println("==============================");
 	}
 
 }
