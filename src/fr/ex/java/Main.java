@@ -104,13 +104,18 @@ public class Main {
         // Then we filter if they known other celebrities
         Set<Integer> validatedCelebrities = filteringCelebrities(knownByEveryone, knownGuests);
         
-        // Final display
-        System.out.println("==============================");
+        // Final display of all celebrities found or a message to say there is none
+        System.out.println("============================");
         System.out.println("Célébrités identifiées :\n");
-        for (Integer id : validatedCelebrities) {
-            System.out.println("- " + guestNames.get(id));
+        if (validatedCelebrities.isEmpty()) {
+        	System.out.println("Aucune célébrité trouvé :(");
+        } else {
+        	for (Integer id : validatedCelebrities) {
+                 System.out.println("- " + guestNames.get(id));
+              }
         }
-        System.out.println("==============================");
+      
+        System.out.println("============================");
 	}
 
 }
