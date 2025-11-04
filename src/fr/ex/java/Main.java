@@ -20,12 +20,15 @@ public class Main {
 				if (!otherGuestId.equals(guestId)) {
 					List<Integer> known = knownGuests.get(otherGuestId);
 					
+					// If any guest does not know this guest, then they are not a celebrity
 					if (known == null || !known.contains(guestId)) {
 						knownByAll = false;
 						break;
 					}
 				}
 			}
+			
+			// If a guest is known by everyone, we add him to potential celebrities
 			if (knownByAll) {
 				potentialCelebrities.add(guestId);
 			}
@@ -33,31 +36,43 @@ public class Main {
 		return potentialCelebrities;
 	}
 	
-	public static Set<Integer> filteringCelebrities(Set<Integer> candidates, Map<Integer, List<Integer>> knownGuests){
-		
-		Set<Integer> result = new HashSet<>();
-		
-		for (Integer candidateId: candidates) {
-			List<Integer> knownByCandidate = knownGuests.get(candidateId);
-			boolean onlyKnownCelebrities = true;
-			
-			if (knownByCandidate != null) {
-				
-				for (Integer knownId: knownByCandidate) {
-					
-					if (!candidates.contains(knownId)) {
-						onlyKnownCelebrities = false;
-						break;
-					}
-				}
-			}
-			if (onlyKnownCelebrities) {
-				result.add(candidateId);
-			}
-		}
-		return result;
-		
+	
+	// This method filters the list of potential celebrities where
+    // a true celebrity must only know other celebrities
+	public static Set<Integer> filteringCelebrities(Set<Integer> candidates, Map<Integer, List<Integer>> knownGuests) {
+	    Set<Integer> celebrities = new HashSet<>(candidates);
+	    boolean changed;
+
+	 // Repeat until the list of celebrities stabilizes
+	    do {
+	        changed = false;
+	        Set<Integer> setToRemove = new HashSet<>();
+
+	        for (Integer candidateId : celebrities) {
+	            List<Integer> knownByCandidate = knownGuests.get(candidateId);
+	            
+	         // Check if the candidate knows only other celebrities
+	            if (knownByCandidate != null) {
+	                for (Integer knownId : knownByCandidate) {
+	                    if (!celebrities.contains(knownId)) {
+	                        setToRemove.add(candidateId);
+	                        break;
+	                    }
+	                }
+	            }
+	        }
+	        
+	        // Remove candidates who know non-celebrities guests
+	        if (!setToRemove.isEmpty()) {
+	            celebrities.removeAll(setToRemove);
+	            changed = true;
+	        }
+
+	    } while (changed);
+
+	    return celebrities;
 	}
+
 
 	public static void main(String[] args) {
 		
