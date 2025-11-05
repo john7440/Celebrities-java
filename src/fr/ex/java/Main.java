@@ -40,18 +40,29 @@ public class Main {
 	// This method filters the list of potential celebrities where
     // a true celebrity must only know other celebrities
 	public static Set<Integer> filteringCelebrities(Set<Integer> candidates, Map<Integer, List<Integer>> knownGuests) {
+		
+		// We create a copy of candidates
 	    Set<Integer> celebrities = new HashSet<>(candidates);
+	    
+	    // boolean to know if it was changed or not (to know if
+	    // we must continue to filter or not)
 	    boolean changed;
 
 	 // Repeat until the list of celebrities stabilizes
 	    do {
 	        changed = false;
+	        
+	        // We put every candidate that must be deleted on that turn 
 	        Set<Integer> setToRemove = new HashSet<>();
 
+	        //For each candidate still in the celebrities list, we search
+	        // who they know
 	        for (Integer candidateId : celebrities) {
 	            List<Integer> knownByCandidate = knownGuests.get(candidateId);
 	            
-	         // Check if the candidate knows only other celebrities
+	         // Check if the candidate knows only other celebrities, if not then
+	            // he/she can't be a celebrities and we add him to setToRemove and
+	            // stop checking for this candidate
 	            if (knownByCandidate != null) {
 	                for (Integer knownId : knownByCandidate) {
 	                    if (!celebrities.contains(knownId)) {
@@ -62,12 +73,16 @@ public class Main {
 	            }
 	        }
 	        
-	        // Remove candidates who know non-celebrities guests
+	        // Remove candidates who know non-celebrities guests and 
+	        // we set the boolean changed to true, to specify we must do another
+	        // iteration
 	        if (!setToRemove.isEmpty()) {
 	            celebrities.removeAll(setToRemove);
 	            changed = true;
 	        }
-
+	       
+	        // This loop continue while changes were done (we know it because of 
+	        // the boolean)
 	    } while (changed);
 
 	    return celebrities;
@@ -104,7 +119,7 @@ public class Main {
         // Then we filter if they known other celebrities
         Set<Integer> validatedCelebrities = filteringCelebrities(knownByEveryone, knownGuests);
         
-        // Final display of all celebrities found or a message to say there is none
+        //Final display of all celebrities found or a message to say there is none
         System.out.println("============================");
         System.out.println("Célébrités identifiées :\n");
         if (validatedCelebrities.isEmpty()) {
