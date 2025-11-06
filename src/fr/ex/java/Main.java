@@ -36,7 +36,6 @@ public class Main {
 		return potentialCelebrities;
 	}
 	
-	
 	// This method filters the list of potential celebrities where
     // a true celebrity must only know other celebrities
 	public static Set<Integer> filteringCelebrities(Set<Integer> candidates, Map<Integer, List<Integer>> knownGuests) {
@@ -88,7 +87,6 @@ public class Main {
 	    return celebrities;
 	}
 
-
 	public static void main(String[] args) {
 		
 		// Our guests list with their id and names
@@ -108,7 +106,7 @@ public class Main {
         knownGuests.put(2, Arrays.asList(3, 5, 6));
         knownGuests.put(3, Arrays.asList(2, 4, 5, 6));
         knownGuests.put(4, Arrays.asList(1, 2, 5, 6, 8));
-        knownGuests.put(5, Arrays.asList(6));
+        knownGuests.put(5, Arrays.asList(6,2));
         knownGuests.put(6, Arrays.asList(5));
         knownGuests.put(7, Arrays.asList(2, 3, 5, 6, 8));
         knownGuests.put(8, Arrays.asList(2, 4, 5, 6 , 7));
@@ -126,11 +124,11 @@ public class Main {
         	System.out.println("Aucune célébrité trouvé :(");
         } else {
         	for (Integer id : validatedCelebrities) {
-                 System.out.println("- " + guestNames.get(id));
+                 System.out.println("\t- " + guestNames.get(id));
               }
         }
       
-        System.out.println("============================");
+        System.out.println("\n============================");
 	}
 
 }
